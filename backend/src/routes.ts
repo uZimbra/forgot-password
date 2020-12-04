@@ -7,6 +7,12 @@ import generateToken from './services/generateToken';
 
 const routes = express();
 
+interface TokenPayLoad {
+  iat: number;
+  exp: number
+  email: string;
+}
+
 routes.post('/send', async (req, res) => {
   const { email } = req.body;
 
@@ -39,12 +45,12 @@ routes.get('/:token', (req, res) => {
   const unhashedToken = Buffer.from(token, 'base64').toString('ascii');
 
   try {
-    const decodedToken = verify(unhashedToken, process.env.JWT_SECRET!);
-    
-    return res.json({ message: 'Success!'});
+    const decodedToken = verify(unhashedToken, process.env.JWT_SECRET!) as TokenPayLoad;
+
+    return res.json({ email: decodedToken.email });
   } catch (err) {
 
-    return res.json( { error: 'Invalid link!'})
+    return res.json({ error: 'Invalid link!'})
   } 
 }) 
 
