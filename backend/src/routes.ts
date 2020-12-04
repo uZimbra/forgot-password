@@ -8,9 +8,9 @@ import generateToken from './services/generateToken';
 const routes = express();
 
 routes.post('/send', async (req, res) => {
-  const { email, password } = req.body;
+  const { email } = req.body;
 
-  if (email == process.env.EMAIL_USER_TEST && password == process.env.EMAIL_PASSWORD_TEST) {
+  if (email == process.env.EMAIL_USER_TEST) {
     const generatedToken = generateToken(email);
 
     const hashedToken = Buffer.from(generatedToken).toString('base64');
